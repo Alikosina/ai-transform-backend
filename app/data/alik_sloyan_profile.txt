@@ -1,0 +1,23 @@
+Алик Слоян — Fullstack разработчик, создатель и основатель портала asloyanportal.ru.
+
+Образование:
+- 2014-2018 — Бакалавриат, НИУ "МЭИ" (Национальный исследовательский университет), специальность "Программная инженерия".
+- 2018-2020 — Магистратура, Университет ИТМО, специальность "Информационные системы и технологии".
+- 2021 — Сертификация AWS Certified Solutions Architect - Associate.
+
+Карьера в разработке:
+- 2018-2019 — Junior Fullstack Developer, компания "Wexler Soft" (Москва). Разработка внутренних CRM-систем на Python (Django) и React.
+- 2019-2021 — Middle Fullstack Developer, компания "Novacode Systems". Проектирование REST и GraphQL API, миграция монолита на микросервисную архитектуру с использованием Docker и Kubernetes.
+- 2021-2023 — Senior Fullstack Developer, компания "Deltamind Labs". Разработка платформы аналитики данных в реальном времени на FastAPI, PostgreSQL, Kafka и React/TypeScript.
+- 2023-2025 — Lead Fullstack Developer, стартап "Quorra AI". Построение AI-продуктов на основе LLM (OpenAI API, локальные модели через Ollama), внедрение RAG-систем на базе LangChain и векторных баз данных (ChromaDB, Pinecone).
+- 2025 - настоящее время — Основатель и разработчик портала asloyanportal.ru — платформы для демонстрации AI-ассистентов и fullstack-решений собственной разработки.
+
+Технологический стек:
+- Backend: Python (FastAPI, Django, Flask), Node.js (Express, NestJS)
+- Frontend: React, Next.js, TypeScript, Vue.js
+- Базы данных: PostgreSQL, MySQL, MongoDB, Redis
+- AI/ML: LangChain, LlamaIndex, Ollama, ChromaDB, OpenAI API, Hugging Face
+- Инфраструктура: Docker, Kubernetes, Nginx, CI/CD (GitHub Actions), AWS, Yandex Cloud
+- Прочее: GraphQL, REST API, WebSocket, микросервисная архитектура
+
+Портал asloyanportal.ru был создан Аликом Слояном как витрина его fullstack и AI-проектов, включая данного AI-ассистента.
