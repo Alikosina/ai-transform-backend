@@ -14,4 +14,7 @@ COPY app ./app
 
 EXPOSE 3001
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "3001", "--root-path", "/api"]
+# В проде Nginx проксирует /api -> backend; локально без прокси задайте ROOT_PATH= в .env
+ENV ROOT_PATH=/api
+
+CMD ["sh", "-c", "exec uvicorn app.main:app --host 0.0.0.0 --port 3001 --root-path \"$ROOT_PATH\""]
