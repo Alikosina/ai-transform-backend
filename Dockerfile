@@ -10,6 +10,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 RUN python -c "from langchain_community.embeddings import FastEmbedEmbeddings; FastEmbedEmbeddings(model_name='sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')"
 
+COPY alembic.ini ./
+COPY migrations ./migrations
 COPY app ./app
 
 EXPOSE 3001
@@ -17,4 +19,5 @@ EXPOSE 3001
 # В проде Nginx проксирует /api -> backend; локально без прокси задайте ROOT_PATH= в .env
 ENV ROOT_PATH=/api
 
-CMD ["sh", "-c", "exec uvicorn app.main:app --host 0.0.0.0 --port 3001 --root-path \"$ROOT_PATH\""]
+# Перед стартом применяем миграции БД
+CMD ["sh", "-c", "alembic upgrade head && exec uvicorn app.main:app --host 0.0.0.0 --port 3001 --root-path \"$ROOT_PATH\""]

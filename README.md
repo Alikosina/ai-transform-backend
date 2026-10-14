@@ -22,12 +22,25 @@ docker compose up --build -d
 
 API будет доступно на http://127.0.0.1:3001, документация — на http://127.0.0.1:3001/docs.
 
+Вместе с бекендом поднимается PostgreSQL (сервис `db`). Перед первым запуском задайте в `.env`
+`POSTGRES_PASSWORD` (`openssl rand -hex 32`) и тот же пароль в `DATABASE_URL`.
+Миграции (Alembic) применяются автоматически при старте контейнера бекенда.
+
+Новая миграция после изменения моделей:
+
+```bash
+docker compose run --rm backend alembic revision --autogenerate -m "описание"
+```
+
 ## Структура
 
 ```
 app/
   core/config.py       # настройки приложения
-  api/routes/          # роуты (health, items)
+  core/database.py     # подключение к PostgreSQL (SQLAlchemy async)
+  api/routes/          # роуты (health, items, llm, mock, portfolio)
+  models/              # SQLAlchemy-модели
   schemas/             # Pydantic-схемы
+migrations/            # миграции Alembic
   main.py              # точка входа
 ```
