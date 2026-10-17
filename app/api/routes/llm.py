@@ -26,7 +26,15 @@ prompt = ChatPromptTemplate.from_messages(
 
 @router.post("/generate", response_model=LLMResponse)
 async def generate(payload: LLMRequest):
-    llm = ChatOllama(base_url=settings.ollama_base_url, model=settings.ollama_model)
+    llm = ChatOllama(
+        base_url=settings.ollama_base_url,
+        model=settings.ollama_model,
+        temperature=0.2,
+        top_k=30,
+        top_p=0.85,
+        repeat_penalty=1.1,
+        num_ctx=4096,
+    )
     chain = prompt | llm
 
     context = retrieve_context(payload.text) or "Контекст отсутствует."
