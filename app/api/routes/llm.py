@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_ollama import ChatOllama
 
 from app.core.config import settings
@@ -7,6 +8,9 @@ from app.schemas.llm import LLMRequest, LLMResponse
 from app.services.rag import retrieve_context
 
 router = APIRouter(prefix="/llm", tags=["llm"])
+
+# How many previous exchanges (user message + assistant reply) to keep as context.
+HISTORY_TURNS = 2
 
 SYSTEM_PROMPT = (
     "Ты — AI помощник на портале asloyanportal.ru.\n"
@@ -23,6 +27,7 @@ SYSTEM_PROMPT = (
 prompt = ChatPromptTemplate.from_messages(
     [
         ("system", SYSTEM_PROMPT),
+        MessagesPlaceholder("history", optional=True),
         ("human", "{text}\n\n(Ответь на русском языке.)"),
     ]
 )
@@ -43,8 +48,17 @@ async def generate(payload: LLMRequest):
 
     context = retrieve_context(payload.text) or "Контекст отсутствует."
 
+    # Keep only the last HISTORY_TURNS exchanges, regardless of what the client sent.
+    recent_history = payload.history[-HISTORY_TURNS * 2 :]
+    history = [
+        HumanMessage(content=message.content)
+        if message.role == "user"
+        else AIMessage(content=message.content)
+        for message in recent_history
+    ]
+
     try:
-        result = await chain.ainvoke({"text": payload.text, "context": context})
+        result = await chain.ainvoke({"text": payload.text, "context": context, "history": history})
     except Exception as exc:
         raise HTTPException(status_code=502, detail=f"LLM request failed: {exc}") from exc
 
