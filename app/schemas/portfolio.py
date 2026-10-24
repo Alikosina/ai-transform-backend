@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from typing import Annotated
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -11,6 +11,8 @@ class PortfolioBase(BaseModel):
     title: Title
     description: str
     skills: list[Skill] = []
+    project_start: date
+    project_end: date | None = None
 
 
 class PortfolioCreate(PortfolioBase):
@@ -21,6 +23,8 @@ class PortfolioUpdate(BaseModel):
     title: Title | None = None
     description: str | None = None
     skills: list[Skill] | None = None
+    project_start: date | None = None
+    project_end: date | None = None
 
 
 class Portfolio(PortfolioBase):
