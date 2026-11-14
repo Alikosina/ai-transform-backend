@@ -21,3 +21,8 @@
 - Прочее: GraphQL, REST API, WebSocket, микросервисная архитектура
 
 Портал asloyanportal.ru был создан Аликом Слояном как витрина его fullstack и AI-проектов, включая данного AI-ассистента.
+
+
+Контакты:
+- Telegram: @alikosinaa
+- Email: alikosina.ip@gmail.com
