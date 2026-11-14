@@ -1,10 +1,12 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_openai import ChatOpenAI
 import httpx
 
+from app.api.deps import get_current_user
 from app.core.config import settings
+from app.models.user import User
 from app.schemas.llm import DraftRef, LLMRequest, LLMResponse
 from app.services.drafts import create_draft, get_draft, remove_draft, try_reserve_send
 from app.services.mail import MailError, is_valid_email, send_email
@@ -109,7 +111,7 @@ async def generate(payload: LLMRequest):
 
 
 @router.post("/email/confirm")
-async def confirm_email(payload: DraftRef):
+async def confirm_email(payload: DraftRef, _user: User = Depends(get_current_user)):
     draft = get_draft(payload.draft_id)
     if draft is None:
         raise HTTPException(status_code=404, detail="Черновик не найден или истёк")
@@ -128,6 +130,6 @@ async def confirm_email(payload: DraftRef):
 
 
 @router.post("/email/cancel")
-async def cancel_email(payload: DraftRef):
+async def cancel_email(payload: DraftRef, _user: User = Depends(get_current_user)):
     remove_draft(payload.draft_id)
     return {"status": "cancelled"}
